@@ -15,6 +15,11 @@ Instructions to replicate all analyses in the paper as follows:
   - In the script `01-summarize-simulations-absolute.R`, look for `CHANGE` comments on lines 8 and 14. Change the paths here to whatever you chose in the previous script.
   - Run the script `01-summarize-simulations-absolute.R`.
 - Section 4.3, simulation 2:
+  - In the script `02-simulations-compare-glmmadaptive.R`, look for several `CHANGE` comments on lines 7-21. Change the paths here to whatever you like.
+  - In partcular, make sure you tell the script where to find the `aghqmm` package.
+  - Run the script `02-simulations-compare-glmmadaptive.R`.
+  - In the script `02-summarize-simulations-compare-glmmadaptive.R`, look for `CHANGE` comments on lines 7 and 13. Change the paths here to whatever you chose in the previous script.
+  - Run the script `02-summarize-simulations-compare-glmmadaptive.R`.
 - Section 5.1, smoking data:
 - Section 5.2, toenail data:
 - Supplement 3.1:
