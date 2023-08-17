@@ -1,5 +1,8 @@
 # Approximate Marginal Likelihood Inference in Mixed Models for Grouped Data
 Replication code for paper: *Approximate Marginal Likelihood Inference in Mixed Models for Grouped Data* by Alex Stringer.
+
+All scripts require the `aghqmm` package, available from GitHub [here](https://github.com/awstringer1/aghqmm).
+
 Instructions to replicate all analyses in the paper as follows:
 
 - Section 4.3, simulation 1:
