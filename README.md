@@ -31,5 +31,5 @@ Instructions to replicate all analyses in the paper as follows:
 
 The data are obtained as follows:
 
-- **Smoking**: obtained from the online supplementary material to the paper *A note on marginalization of regression parameters from mixed models of binary outcomes* by Donald Hedeker, Stephen H. C. du Toit, Hakan Demirtas, and Robert D. Gibbons (*Biometrics* (2017) **74**(1) pp. 354–361). Find that paper [here](https://onlinelibrary.wiley.com/doi/10.1111/biom.12707). Data set is **Smoking.dat**.
+- **Smoking**: obtained from the online supplementary material to the paper *A note on marginalization of regression parameters from mixed models of binary outcomes* by Donald Hedeker, Stephen H. C. du Toit, Hakan Demirtas, and Robert D. Gibbons (*Biometrics* (2017) **74**(1) pp. 354–361). Find that paper [here](https://onlinelibrary.wiley.com/doi/10.1111/biom.12707). Data set is **SmkStudy.dat**.
 - **Toenail**: data set `toenail` in `R` package `mice`.
