@@ -3,8 +3,19 @@ Replication code for paper: *Approximate Marginal Likelihood Inference in Mixed 
 All code was run on a 2021 M1 MacBook Pro with 10 cores and 64Gb of RAM. I did not test it on other hardware,
 but I don't make use of any speciifc features of the Apple silicon either.
 
+## Package
+
 All scripts require the `aghqmm` package, available from GitHub [here](https://github.com/awstringer1/aghqmm).
 You should download this repository to a directory on your machine.
+
+## Data
+
+The data are obtained as follows:
+
+- **Smoking**: obtained from the online supplementary material to the paper *A note on marginalization of regression parameters from mixed models of binary outcomes* by Donald Hedeker, Stephen H. C. du Toit, Hakan Demirtas, and Robert D. Gibbons (*Biometrics* (2017) **74**(1) pp. 354–361). Find that paper [here](https://onlinelibrary.wiley.com/doi/10.1111/biom.12707). Data set is **SmkStudy.dat**.
+- **Toenail**: data set `toenail` in `R` package `mice`.
+
+## Replication
 
 Instructions to replicate all analyses in the paper as follows:
 
@@ -33,7 +44,4 @@ Instructions to replicate all analyses in the paper as follows:
   - Note: there will be warnings; the model does not converge successfully for all methods and numbers of quadrature points. These are part of the results discussed in the paper.
 - Supplement 3.3:
 
-The data are obtained as follows:
 
-- **Smoking**: obtained from the online supplementary material to the paper *A note on marginalization of regression parameters from mixed models of binary outcomes* by Donald Hedeker, Stephen H. C. du Toit, Hakan Demirtas, and Robert D. Gibbons (*Biometrics* (2017) **74**(1) pp. 354–361). Find that paper [here](https://onlinelibrary.wiley.com/doi/10.1111/biom.12707). Data set is **SmkStudy.dat**.
-- **Toenail**: data set `toenail` in `R` package `mice`.
