@@ -8,35 +8,30 @@ You should download this repository to a directory on your machine.
 
 Instructions to replicate all analyses in the paper as follows:
 
-- Section 4.3, simulation 1:
+- Section 4.3, simulation 1 and Supplement 3.1:
   - In the script `01-simulations-absolute.R`, look for several `CHANGE` comments on lines 7-21. Change the paths here to whatever you like.
   - In partcular, make sure you tell the script where to find the `aghqmm` package.
   - Run the script `01-simulations-absolute.R`.
   - In the script `01-summarize-simulations-absolute.R`, look for `CHANGE` comments on lines 8 and 14. Change the paths here to whatever you chose in the previous script.
   - Run the script `01-summarize-simulations-absolute.R`.
-- Section 4.3, simulation 2:
+- Section 4.3, simulation 2 and Supplements 3.2.1 and 3.2.2:
   - In the script `02-simulations-compare-glmmadaptive.R`, look for several `CHANGE` comments on lines 7-21. Change the paths here to whatever you like.
   - In partcular, make sure you tell the script where to find the `aghqmm` package.
   - Run the script `02-simulations-compare-glmmadaptive.R`.
   - In the script `02-summarize-simulations-compare-glmmadaptive.R`, look for `CHANGE` comments on lines 7 and 13. Change the paths here to whatever you chose in the previous script.
   - Run the script `02-summarize-simulations-compare-glmmadaptive.R`.
-- Section 5.1, smoking data:
+- Section 5.1 and Supplement 4.1, smoking data:
   - Download the `SmkStudy.dat` file as described below and save it to your machine.
   - In the script `03-smoking.R`, look for `CHANGE` comments on lines 7 and 11. Change the paths here to wherever you saved the `SmkStudy.dat` file.
   - At the `CHANGE` comment at line 18, tell the script where to find the `aghqmm` package.
   - Run the script `03-smoking.R`.
   - Note: there will be warnings; the model does not converge successfully for all methods and numbers of quadrature points. These are part of the results discussed in the paper.
-- Section 5.2, toenail data:
+- Section 5.2 and Supplement 4.2, toenail data:
   - In the script `04-toenail.R`, look for `CHANGE` comments on line 8. Change the path here to whatever you like.
   - At the `CHANGE` comment at line 15, tell the script where to find the `aghqmm` package.
   - Run the script `04-toenail.R`.
   - Note: there will be warnings; the model does not converge successfully for all methods and numbers of quadrature points. These are part of the results discussed in the paper.
-- Supplement 3.1:
-- Supplement 3.2.1:
-- Supplement 3.2.2:
 - Supplement 3.3:
-- Supplement 4.1:
-- Supplement 4.2:
 
 The data are obtained as follows:
 
