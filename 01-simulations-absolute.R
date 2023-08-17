@@ -43,8 +43,8 @@ for (pkg in pkgs) {
 
 ## Set Parameters ##
 # Will run numsims simulations in parallel, repeated numruns times in series.
-numruns <- 2  # Number of times to execute the simulations
-numsims <- 2 # Number of simulations in each category PER RUN
+numruns <- 10  # Number of times to execute the simulations
+numsims <- 100 # Number of simulations in each category PER RUN
 m <- c(100,200,500,1000)
 n <- c(3,5,7,9)
 k <- c(1,3,5,7,9,11,13,15,17,19,21,23,25)
