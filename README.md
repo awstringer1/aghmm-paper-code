@@ -24,6 +24,7 @@ Instructions to replicate all analyses in the paper as follows:
   - In the script `03-smoking.R`, look for `CHANGE` comments on lines 7 and 11. Change the paths here to whatever you like.
   - At the `CHANGE` comment at line 18, tell the script where to find the `aghqmm` package.
   - Run the script `03-smoking.R`.
+  - Note: there will be warnings; the model does not converge successfully for all methods and numbers of quadrature points. These are part of the results discussed in the paper.
 - Section 5.2, toenail data:
 - Supplement 3.1:
 - Supplement 3.2.1:
