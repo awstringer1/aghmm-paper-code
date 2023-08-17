@@ -43,5 +43,10 @@ Instructions to replicate all analyses in the paper as follows:
   - Run the script `04-toenail.R`.
   - Note: there will be warnings; the model does not converge successfully for all methods and numbers of quadrature points. These are part of the results discussed in the paper.
 - Supplement 3.3:
-
+  - In the script `05-simulations-scalar.R`, look for `CHANGE` comments on lines 6–16. Change the paths here to whatever you like.
+  - In partcular, make sure you tell the script where to find the `aghqmm` package.
+  - Run the script `05-simulations-scalar.R`.
+  - In the script `05-summarize-simulations-scalar.R`, look for `CHANGE` comments on lines 7 and 13. Change the paths here to whatever you chose in the previous script.
+  - Run the script `05-summarize-simulations-scalar.R`.
+  
 
