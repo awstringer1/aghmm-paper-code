@@ -1,7 +1,7 @@
 # Approximate Marginal Likelihood Inference in Mixed Models for Grouped Data
 Replication code for paper: *Approximate Marginal Likelihood Inference in Mixed Models for Grouped Data* by Alex Stringer.
 All code was run on a 2021 M1 MacBook Pro with 10 cores and 64Gb of RAM. I did not test it on other hardware,
-but I don't make use of any speciifc features of the Apple silicon either.
+but I don't make use of any specific features of the Apple silicon either.
 
 ## Package
 
