@@ -1,0 +1,17 @@
+name: Run R Scripts
+
+on: 
+  push:
+  #schedule: 
+  #  - cron: '0 * * * *'
+
+jobs:
+  render:
+    name: Run R script
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: r-lib/actions/setup-r@v1
+      - uses: r-lib/actions/setup-pandoc@v1
+      - name: Run toenail R script
+        run: Rscript 04-toenail.R
