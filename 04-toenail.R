@@ -33,7 +33,7 @@ for (pkg in pkgs) {
 
 ## Install aghqmm
 
-remotes::install_github("awstringer1/aghqmm", auth_token=gitcreds::gitcreds_get())
+remotes::install_github("awstringer1/aghqmm")
 library(aghqmm)
 
 ## Load data
