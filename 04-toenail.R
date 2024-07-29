@@ -33,11 +33,8 @@ for (pkg in pkgs) {
 
 ## Install aghqmm
 
-<<<<<<< HEAD
-install.packages(aghqmmpath, repos=NULL, type="source")
-=======
+# install.packages(aghqmmpath, repos=NULL, type="source")
 remotes::install_github("awstringer1/aghqmm")
->>>>>>> 2da9c595efdf6e17141f2709d4ee13c93a8d1b16
 library(aghqmm)
 
 ## Load data
