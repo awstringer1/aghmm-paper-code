@@ -36,7 +36,7 @@ for (pkg in pkgs) {
 
 ## Install aghqmm
 
-install.packages(aghqmmpath,repos=NULL,type="source")
+install.packages(aghqmmpath, repos=NULL, type="source")
 library(aghqmm)
 
 ## Load data
@@ -111,9 +111,6 @@ paramsummary_beta <- tibble(
   beta1_upper = c(Reduce(c,Map("[[",Map("[[",LMElist,"betaints"),10)),Reduce(c,Map("[[",Map("[[",AQlist,"betaints"),10)),Reduce(c,Map("[[",Map("[[",GAlist,"betaints"),10))),
   beta2_upper = c(Reduce(c,Map("[[",Map("[[",LMElist,"betaints"),11)),Reduce(c,Map("[[",Map("[[",AQlist,"betaints"),11)),Reduce(c,Map("[[",Map("[[",GAlist,"betaints"),11))),
   beta3_upper = c(Reduce(c,Map("[[",Map("[[",LMElist,"betaints"),12)),Reduce(c,Map("[[",Map("[[",AQlist,"betaints"),12)),Reduce(c,Map("[[",Map("[[",GAlist,"betaints"),12)))
-  # sigmasq_lower = c(Reduce(c,Map("[[",Map("[[",LMElist,"sigmaints"),1)),Reduce(c,Map("[[",Map("[[",AQlist,"sigmaints"),1))),
-  # sigmasq_point = c(Reduce(c,Map("[[",Map("[[",LMElist,"sigmaints"),4)),Reduce(c,Map("[[",Map("[[",AQlist,"sigmaints"),2))),
-  # sigmasq_upper = c(Reduce(c,Map("[[",Map("[[",LMElist,"sigmaints"),7)),Reduce(c,Map("[[",Map("[[",AQlist,"sigmaints"),3)))
 ) %>%
   pivot_longer(
     beta0_lower:beta3_upper,
