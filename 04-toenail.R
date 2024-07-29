@@ -6,15 +6,11 @@
 
 ## Set paths
 # CHANGE the base path to whatever you want on your machine
-basepath <- '~/work/projects/mixedmodel-computation/replication'
+basepath <- getwd()
 stopifnot(dir.exists(basepath))
 resultspath <- file.path(basepath,'results')
 if (!dir.exists(resultspath)) dir.create(resultspath)
 figurepath <- file.path(basepath,'figures')
-
-# CHANGE the path to where you downloaded the aghqmm package repo
-# from https://github.com/awstringer1/aghqmm
-aghqmmpath <- "~/work/projects/mixedmodel-computation/aghqmm" # CHANGE this
 
 ## Libraries ----
 
@@ -24,7 +20,8 @@ pkgs <- c(
   'Matrix',
   'lme4',
   'GLMMadaptive',
-  'mice'
+  'mice',
+  'remotes'
 )
 for (pkg in pkgs) {
   if (!require(pkg,character.only = TRUE,quietly = TRUE)) {
@@ -36,7 +33,11 @@ for (pkg in pkgs) {
 
 ## Install aghqmm
 
+<<<<<<< HEAD
 install.packages(aghqmmpath, repos=NULL, type="source")
+=======
+remotes::install_github("awstringer1/aghqmm")
+>>>>>>> 2da9c595efdf6e17141f2709d4ee13c93a8d1b16
 library(aghqmm)
 
 ## Load data

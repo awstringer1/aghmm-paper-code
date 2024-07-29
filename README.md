@@ -1,5 +1,7 @@
 # Approximate Marginal Likelihood Inference in Mixed Models for Grouped Data
 Replication code for paper: *Approximate Marginal Likelihood Inference in Mixed Models for Grouped Data* by Alex Stringer.
+The paper is [on arXiv](https://arxiv.org/abs/2310.01589).
+
 All code was run on a 2021 M1 MacBook Pro with 10 cores and 64Gb of RAM. I did not test it on other hardware,
 but I don't make use of any specific features of the Apple silicon either.
 
@@ -30,7 +32,12 @@ Instructions to replicate all analyses in the paper as follows:
   - In partcular, make sure you tell the script where to find the `aghqmm` package.
   - Run the script `02-simulations-compare-glmmadaptive.R`.
   - In the script `02-summarize-simulations-compare-glmmadaptive.R`, look for `CHANGE` comments on lines 7 and 13. Change the paths here to whatever you chose in the previous script.
-  - Run the script `02-summarize-simulations-compare-glmmadaptive.R`.
+  - Run the script `06-summarize-simulations-compare-lme4.R`.
+  - In the script `06-simulations-compare-lme4.R`, look for several `CHANGE` comments on lines 6-20. Change the paths here to whatever you like.
+  - In partcular, make sure you tell the script where to find the `aghqmm` package.
+  - Run the script `06-simulations-compare-lme4.R`.
+  - In the script `06-summarize-simulations-compare-lme4.R`, look for `CHANGE` comments on lines 7 and 13. Change the paths here to whatever you chose in the previous script.
+  - Run the script `06-summarize-simulations-compare-lme4.R'.
 - Section 5.1 and Supplement 4.1, smoking data:
   - Download the `SmkStudy.dat` file as described below and save it to your machine.
   - In the script `03-smoking.R`, look for `CHANGE` comments on lines 7 and 11. Change the paths here to wherever you saved the `SmkStudy.dat` file.
