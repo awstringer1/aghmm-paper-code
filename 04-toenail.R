@@ -153,6 +153,12 @@ bootresults <- profileresults <- as.data.frame(lme4results)
 bootresults[["method"]] <- rep("boot", nrow(bootresults))
 profileresults[["method"]] <- rep("profile", nrow(bootresults))
 
+print(profileresults[ ,'sigmasq_lower'])
+print(profileresults[['sigmasq_lower']])
+print(profileresults[ ,"sigmasq_lower"])
+print(profileresults[["sigmasq_lower"]])
+
+
 # Now, do the bootstrapping and the profile
 profilelist <- bootlist <- list()
 length(profilelist) <- length(bootlist) <- length(ktodo)
@@ -203,8 +209,6 @@ get_bounds <- function(lst) {
 
 profilebounds <- as.matrix(Reduce(rbind, Map(get_bounds,profilelist)))
 bootbounds <- as.matrix(Reduce(rbind, Map(get_bounds,bootlist)))
-
-print(profileresults[ ,'sigmasq_lower'])
 
 profileresults[ ,'sigmasq_lower'] <- as.numeric(profilebounds[ ,1])
 profileresults[ ,'sigmasq_upper'] <- as.numeric(profilebounds[ ,2])
