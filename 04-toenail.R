@@ -8,21 +8,27 @@ stopifnot(dir.exists(basepath))
 resultspath <- file.path(basepath,'results')
 if (!dir.exists(resultspath)) dir.create(resultspath)
 figurepath <- file.path(basepath,'figures')
+if (!dir.exists(figurepath)) dir.create(figurepath)
 
 ## Set parameters 
 # These are the values used to reproduce the results in the manuscript:
 # NUMBOOT <- 200
 # ktodo <- seq(1,25,by=2)
+# NUMRUNS <- 5
 
 # These are the values used for continuous integration using Github Actions:
 NUMBOOT <- 5
 ktodo <- seq(1,5,by=2)
+NUMRUNS <- 1 # For computation times
 
 ## Libraries ----
 
 # Test for, and install if not found, the packages required to run this script.
 pkgs <- c(
-  'tidyverse',
+  # 'tidyverse',
+  'dplyr',
+  'ggplot2',
+  'tidyr',
   'Matrix',
   'lme4',
   'GLMMadaptive',
@@ -121,13 +127,13 @@ paramsummary_beta <- tibble(
   beta1_upper = c(Reduce(c,Map("[[",Map("[[",LMElist,"betaints"),10)),Reduce(c,Map("[[",Map("[[",AQlist,"betaints"),10)),Reduce(c,Map("[[",Map("[[",GAlist,"betaints"),10))),
   beta2_upper = c(Reduce(c,Map("[[",Map("[[",LMElist,"betaints"),11)),Reduce(c,Map("[[",Map("[[",AQlist,"betaints"),11)),Reduce(c,Map("[[",Map("[[",GAlist,"betaints"),11))),
   beta3_upper = c(Reduce(c,Map("[[",Map("[[",LMElist,"betaints"),12)),Reduce(c,Map("[[",Map("[[",AQlist,"betaints"),12)),Reduce(c,Map("[[",Map("[[",GAlist,"betaints"),12)))
-) %>%
+) |>
   pivot_longer(
     beta0_lower:beta3_upper,
     names_to = c("param","type"),
     names_sep = "_",
     values_to = "value"
-  ) %>%
+  ) |>
   pivot_wider(names_from = type,values_from=value)
 
 # lme4 does not provide Wald intervals for sigma
@@ -142,7 +148,7 @@ paramsummary_sigma <- tibble(
 lmethetas <- as.numeric(Reduce(c,Map("[",Map("[[",LMElist,"theta"),5)))
 paramsummary_sigma[paramsummary_sigma$method == "lme4", ]$sigmasq_point <- exp(-lmethetas/2)
 # now replicate the lme4 results and change the method to profile/boot
-lme4results <- paramsummary_sigma %>% filter(method == "lme4")
+lme4results <- paramsummary_sigma |> filter(method == "lme4")
 bootresults <- profileresults <- as.data.frame(lme4results)
 bootresults[["method"]] <- rep("boot", nrow(bootresults))
 profileresults[["method"]] <- rep("profile", nrow(bootresults))
@@ -198,17 +204,19 @@ get_bounds <- function(lst) {
 profilebounds <- as.matrix(Reduce(rbind, Map(get_bounds,profilelist)))
 bootbounds <- as.matrix(Reduce(rbind, Map(get_bounds,bootlist)))
 
+print(profileresults[ ,'sigmasq_lower'])
+
 profileresults[ ,'sigmasq_lower'] <- as.numeric(profilebounds[ ,1])
 profileresults[ ,'sigmasq_upper'] <- as.numeric(profilebounds[ ,2])
 bootresults[ ,'sigmasq_lower'] <- as.numeric(bootbounds[ ,1])
 bootresults[ ,'sigmasq_upper'] <- as.numeric(bootbounds[ ,2])
 
 # convert the aghq/glmma results to sigma
-paramsummary_sigma_all <- paramsummary_sigma %>%
-  filter(method != "lme4") %>%
-  mutate_at(vars(contains("sigma")),sqrt) %>%
-  bind_rows(profileresults) %>%
-  bind_rows(bootresults) %>%
+paramsummary_sigma_all <- paramsummary_sigma |>
+  filter(method != "lme4") |>
+  mutate_at(vars(contains("sigma")),sqrt) |>
+  bind_rows(profileresults) |>
+  bind_rows(bootresults) |>
   rename(sigma_lower = sigmasq_lower,sigma_point = sigmasq_point,sigma_upper = sigmasq_upper)
 
 ## plots
@@ -223,7 +231,7 @@ XBREAKS <- seq(1,25,by=4)
 
 paramsummary_beta$paramf <- factor(paramsummary_beta$param,labels = c("beta[0]","beta[1]","beta[2]","beta[3]"))
 
-param_plot_beta <- paramsummary_beta %>%
+param_plot_beta <- paramsummary_beta |>
   ggplot(aes(y = point,x=factor(k),ymin = lower,ymax = upper,linetype=method)) +
   theme_bw() +
   facet_wrap(~paramf,labeller = label_parsed) +
@@ -247,9 +255,9 @@ ggsave(filename = file.path(figurepath,"toenail-beta-supplement.pdf"),plot=param
 # for manuscript
 MAINTEXTSIZE <- 23
 POINTSIZE <- 1.5
-pointest_beta0 <- paramsummary_beta %>% filter(param=="beta0",k==25,method=="both") %>% pull(point)
-beta0_plot <- paramsummary_beta %>%
-  filter(param == "beta0") %>%
+pointest_beta0 <- paramsummary_beta |> filter(param=="beta0",k==25,method=="both") |> pull(point)
+beta0_plot <- paramsummary_beta |>
+  filter(param == "beta0") |>
   ggplot(aes(y = point,x=factor(k),ymin = lower,ymax = upper,linetype=method)) +
   theme_bw() +
   geom_linerange(position = position_dodge(width=DODGEWIDTH)) +
@@ -271,9 +279,9 @@ beta0_plot <- paramsummary_beta %>%
 
 ggsave(filename = file.path(figurepath,"toenail-beta0-manuscript.pdf"),plot=beta0_plot,width=7,height=7)
 
-pointest_beta1 <- paramsummary_beta %>% filter(param=="beta1",k==25,method=="both") %>% pull(point)
-beta1_plot <- paramsummary_beta %>%
-  filter(param == "beta1") %>%
+pointest_beta1 <- paramsummary_beta |> filter(param=="beta1",k==25,method=="both") |> pull(point)
+beta1_plot <- paramsummary_beta |>
+  filter(param == "beta1") |>
   ggplot(aes(y = point,x=factor(k),ymin = lower,ymax = upper,linetype=method)) +
   theme_bw() +
   geom_linerange(position = position_dodge(width=DODGEWIDTH)) +
@@ -295,8 +303,8 @@ beta1_plot <- paramsummary_beta %>%
 
 ggsave(filename = file.path(figurepath,"toenail-beta1-manuscript.pdf"),plot=beta1_plot,width=7,height=7)
 
-pointest_sigma <- paramsummary_sigma_all %>% filter(k==25,method=="both") %>% pull(sigma_point)
-sigma_plot <- paramsummary_sigma_all %>%
+pointest_sigma <- paramsummary_sigma_all |> filter(k==25,method=="both") |> pull(sigma_point)
+sigma_plot <- paramsummary_sigma_all |>
   ggplot(aes(y = sigma_point,x=factor(k),ymin = sigma_lower,ymax = sigma_upper,linetype=method)) +
   theme_bw() +
   geom_linerange(position = position_dodge(width=DODGEWIDTH)) +
@@ -325,7 +333,7 @@ YBREAKS <- seq(min(YLIM),max(YLIM),by=2)
 XBREAKS <- seq(1,25,by=4)
 
 
-param_plot_sigma <- paramsummary_sigma_all %>%
+param_plot_sigma <- paramsummary_sigma_all |>
   ggplot(aes(y = sigma_point,x=factor(k),ymin = sigma_lower,ymax = sigma_upper,linetype=method)) +
   theme_bw() +
   geom_linerange(position = position_dodge(width=DODGEWIDTH)) +
@@ -354,32 +362,31 @@ compsummary <- tibble(
   time = c(Reduce(c,Map("[[",LMElist,"comptime")),Reduce(c,Map("[[",AQlist,"comptime")),Reduce(c,Map("[[",GAlist,"comptime"))),
   nll = c(Reduce(c,Map("[[",LMElist,"nll")),Reduce(c,Map("[[",AQlist,"nll")),Reduce(c,Map("[[",GAlist,"nll"))),
   normgrad = c(Reduce(c,Map("[[",LMElist,"normgrad_2")),Reduce(c,Map("[[",AQlist,"normgrad_2")),Reduce(c,Map("[[",GAlist,"normgrad_2")))
-) %>%
+) |>
   mutate(
     nll = nll / (log(10)*nrow(toenail)), # convert to base 10
     lognormgrad = log(normgrad / nrow(toenail),base=10)
   )
 
 # relative times
-aghqtimes <- compsummary %>%
-  filter(method == "both") %>%
+aghqtimes <- compsummary |>
+  filter(method == "both") |>
   dplyr::select(k,aghqtime = time,aghqnll = nll,aghqlognormgrad = lognormgrad)
 
-reltimes_lme4 <- compsummary %>%
-  filter(method == "lme4") %>%
-  left_join(aghqtimes,by='k') %>%
-  mutate(reltime = time / aghqtime,nlldiff = nll - aghqnll,lognormdiff = lognormgrad - aghqlognormgrad) %>%
+reltimes_lme4 <- compsummary |>
+  filter(method == "lme4") |>
+  left_join(aghqtimes,by='k') |>
+  mutate(reltime = time / aghqtime,nlldiff = nll - aghqnll,lognormdiff = lognormgrad - aghqlognormgrad) |>
   dplyr::select(k,reltime,nlldiff,lognormdiff)
-reltimes_GA <- compsummary %>%
-  filter(method == "GLMMadaptive") %>%
-  left_join(aghqtimes,by='k') %>%
-  mutate(reltime = time / aghqtime,nlldiff = nll - aghqnll,lognormdiff = lognormgrad - aghqlognormgrad) %>%
+reltimes_GA <- compsummary |>
+  filter(method == "GLMMadaptive") |>
+  left_join(aghqtimes,by='k') |>
+  mutate(reltime = time / aghqtime,nlldiff = nll - aghqnll,lognormdiff = lognormgrad - aghqlognormgrad) |>
   dplyr::select(k,reltime,nlldiff,lognormdiff)
 
 
 # computation time
 # re-run for a long time
-NUMRUNS <- 5
 LMEcomptimes <- GAcomptimes <- AQcomptimes <- list()
 length(LMEcomptimes) <- length(GAcomptimes) <- length(AQcomptimes) <- length(ktodo)
 tm <- Sys.time()
@@ -470,11 +477,11 @@ process_row <- function(lst) {
 
 GAreltimesframe <- bind_rows(Map(process_row,GAreltimeslist))
 LMEreltimesframe <- bind_rows(Map(process_row,LMEreltimeslist))
-reltimesframe <- bind_rows(GAreltimesframe,LMEreltimesframe) %>%
+reltimesframe <- bind_rows(GAreltimesframe,LMEreltimesframe) |>
   filter(comptime > 0)
 
 
-relcomptimesplot <- reltimesframe %>%
+relcomptimesplot <- reltimesframe |>
   ggplot(aes(x = factor(k),y = comptime,fill = method)) +
   theme_bw() +
   geom_boxplot(outlier.size = .7,outlier.alpha = .05) +
@@ -508,8 +515,8 @@ AQcomptimesframe <- bind_rows(Map(process_row,AQcomptimes))
 LMEcomptimesframe <- bind_rows(Map(process_row,LMEcomptimes))
 comptimesframe <- bind_rows(GAcomptimesframe,AQcomptimesframe,LMEcomptimesframe)
 
-abscomptimesplot <- comptimesframe %>%
-  filter(comptime > 0) %>%
+abscomptimesplot <- comptimesframe |>
+  filter(comptime > 0) |>
   ggplot(aes(x = factor(k),y = comptime,fill = method)) +
   theme_bw() +
   geom_boxplot(outlier.size = .7,outlier.alpha = .05) +
