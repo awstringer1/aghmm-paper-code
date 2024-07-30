@@ -153,6 +153,7 @@ bootresults <- profileresults <- as.data.frame(lme4results)
 bootresults[["method"]] <- rep("boot", nrow(bootresults))
 profileresults[["method"]] <- rep("profile", nrow(bootresults))
 
+print(lme4results)
 print(lme4results[ ,'sigmasq_lower'])
 print(lme4results[['sigmasq_lower']])
 print(lme4results[ ,"sigmasq_lower"])
