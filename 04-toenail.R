@@ -198,10 +198,10 @@ get_bounds <- function(lst) {
 profilebounds <- Reduce(rbind,Map(get_bounds,profilelist))
 bootbounds <- Reduce(rbind,Map(get_bounds,bootlist))
 
-profileresults$sigmasq_lower <- profilebounds[ ,1]
-profileresults$sigmasq_upper <- profilebounds[ ,2]
-bootresults$sigmasq_lower <- bootbounds[ ,1]
-bootresults$sigmasq_upper <- bootbounds[ ,2]
+profileresults[['sigmasq_lower']] <- profilebounds[ ,1]
+profileresults[['sigmasq_upper']] <- profilebounds[ ,2]
+bootresults[['sigmasq_lower']] <- bootbounds[ ,1]
+bootresults[['sigmasq_upper']] <- bootbounds[ ,2]
 
 # convert the aghq/glmma results to sigma
 paramsummary_sigma_all <- paramsummary_sigma %>%
