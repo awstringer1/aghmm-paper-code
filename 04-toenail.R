@@ -1,16 +1,22 @@
 ### Toenail data ###
-# See https://github.com/awstringer1/elgm-paper-code
-# for previous analysis
 
 ## BEGIN SETUP ##
 
 ## Set paths
-# CHANGE the base path to whatever you want on your machine
 basepath <- getwd()
 stopifnot(dir.exists(basepath))
 resultspath <- file.path(basepath,'results')
 if (!dir.exists(resultspath)) dir.create(resultspath)
 figurepath <- file.path(basepath,'figures')
+
+## Set parameters 
+# These are the values used to reproduce the results in the manuscript:
+# NUMBOOT <- 200
+# ktodo <- seq(1,25,by=2)
+
+# These are the values used for continuous integration using Github Actions:
+NUMBOOT <- 5
+ktodo <- seq(1,5,by=2)
 
 ## Libraries ----
 
@@ -33,18 +39,24 @@ for (pkg in pkgs) {
 
 ## Install aghqmm
 
+# Local
+# If installing remotely from Github doesn't work, download the package repository to your basepath
+# and uncomment the next two lines:
+# aghqmmpath <- file.path(basepath, "aghqmm")
 # install.packages(aghqmmpath, repos=NULL, type="source")
-remotes::install_github("awstringer1/aghqmm")
+# Remote: if you have a Github PAT set up in your R session, this should work:
+remotes::install_github("awstringer1/aghqmm", force = TRUE)
+# If you want to set up remotes, this tutorial is helpful:
+# https://carpentries.github.io/sandpaper-docs/github-pat.html
 library(aghqmm)
 
 ## Load data
-data(toenail) # From package 'mice'
+data(toenail) # From package 'mice', loaded above
 
 ## END SETUP ##
 
 ## Fit the model ----
 
-ktodo <- seq(1,25,by=2)
 LMElist <- list()
 length(LMElist) <- length(ktodo)
 AQlist <- GAlist <- LMElist
@@ -124,9 +136,10 @@ paramsummary_sigma <- tibble(
   method = c(Reduce(c,Map("[[",GAlist,"method")),Reduce(c,Map("[[",AQlist,"method")),Reduce(c,Map("[[",LMElist,"method"))),
   k = c(Reduce(c,Map("[[",GAlist,"k")),Reduce(c,Map("[[",AQlist,"k")),Reduce(c,Map("[[",LMElist,"k"))),
   sigmasq_lower = c(Reduce(c,Map("[[",Map("[[",GAlist,"sigmaints"),1)),Reduce(c,Map("[[",Map("[[",AQlist,"sigmaints"),1)),rep(-1,length(LMElist))),
-  sigmasq_point = c(Reduce(c,Map("[[",Map("[[",GAlist,"sigmaints"),2)),Reduce(c,Map("[[",Map("[[",AQlist,"sigmaints"),2)),exp(-Reduce(c,Map("[",Map("[[",LMElist,"theta"),5))/2)),
+  sigmasq_point = c(Reduce(c,Map("[[",Map("[[",GAlist,"sigmaints"),2)),Reduce(c,Map("[[",Map("[[",AQlist,"sigmaints"),2)),rep(-1,length(LMElist))),
   sigmasq_upper = c(Reduce(c,Map("[[",Map("[[",GAlist,"sigmaints"),3)),Reduce(c,Map("[[",Map("[[",AQlist,"sigmaints"),3)),rep(-1,length(LMElist)))
 )
+paramsummary_sigma[paramsummary_sigma$method == "lme4", ]$sigmasq_point <- exp(-Reduce(c,Map("[",Map("[[",LMElist,"theta"),5))/2)
 # now replicate the lme4 results and change the method to profile/boot
 lme4results <- paramsummary_sigma %>% filter(method == "lme4")
 bootresults <- profileresults <- lme4results
@@ -134,7 +147,6 @@ bootresults$method <- "boot"
 profileresults$method <- "profile"
 
 # Now, do the bootstrapping and the profile
-NUMBOOT <- 200
 profilelist <- bootlist <- list()
 length(profilelist) <- length(bootlist) <- length(ktodo)
 profiletimes <- boottimes <- numeric(length(ktodo))
@@ -405,7 +417,7 @@ for (j in 1:length(ktodo)) {
   LMEcomptimes[[j]]$k <- k
   LMEcomptimes[[j]]$comptimes <- numeric(NUMRUNS)
   for (i in 1:NUMRUNS) {
-    cat("k = ",k,", run = ",i," of ",NUMRUNS," for aghqmm...","\n",sep="")
+    cat("k = ",k,", run = ",i," of ",NUMRUNS," for lme4...","\n",sep="")
     tmp <- tryCatch(
       aghqmm::aghqmm(outcome ~ treatment*month + (1|ID),data=toenail,k=k,method="lme4"),
       error = function(e) e
@@ -475,7 +487,7 @@ relcomptimesplot <- reltimesframe %>%
   scale_y_continuous(breaks = seq(0,8,by=1)) +
   coord_cartesian(ylim = c(0,8)) +
   scale_x_discrete(breaks = seq(1,25,by=4)) +
-  geom_hline(yintercept=0,lty='dashed')
+  geom_hline(yintercept=1,lty='dashed')
 
 relcomptimesplotmain <- relcomptimesplot +
   theme(text = element_text(size = MAINTEXTSIZE))
