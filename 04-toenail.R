@@ -143,7 +143,7 @@ lmethetas <- as.numeric(Reduce(c,Map("[",Map("[[",LMElist,"theta"),5)))
 paramsummary_sigma[paramsummary_sigma$method == "lme4", ]$sigmasq_point <- exp(-lmethetas/2)
 # now replicate the lme4 results and change the method to profile/boot
 lme4results <- paramsummary_sigma %>% filter(method == "lme4")
-bootresults <- profileresults <- lme4results
+bootresults <- profileresults <- as.data.frame(lme4results)
 bootresults$method <- "boot"
 profileresults$method <- "profile"
 
@@ -195,13 +195,13 @@ get_bounds <- function(lst) {
   return(unname(as.numeric(lst)))
 }
 
-profilebounds <- Reduce(rbind,Map(get_bounds,profilelist))
-bootbounds <- Reduce(rbind,Map(get_bounds,bootlist))
+profilebounds <- as.matrix(Reduce(rbind, Map(get_bounds,profilelist)))
+bootbounds <- as.matrix(Reduce(rbind, Map(get_bounds,bootlist)))
 
-profileresults[['sigmasq_lower']] <- profilebounds[ ,1]
-profileresults[['sigmasq_upper']] <- profilebounds[ ,2]
-bootresults[['sigmasq_lower']] <- bootbounds[ ,1]
-bootresults[['sigmasq_upper']] <- bootbounds[ ,2]
+profileresults[['sigmasq_lower']] <- as.numeric(profilebounds[ ,1])
+profileresults[['sigmasq_upper']] <- as.numeric(profilebounds[ ,2])
+bootresults[['sigmasq_lower']] <- as.numeric(bootbounds[ ,1])
+bootresults[['sigmasq_upper']] <- as.numeric(bootbounds[ ,2])
 
 # convert the aghq/glmma results to sigma
 paramsummary_sigma_all <- paramsummary_sigma %>%
