@@ -144,8 +144,8 @@ paramsummary_sigma[paramsummary_sigma$method == "lme4", ]$sigmasq_point <- exp(-
 # now replicate the lme4 results and change the method to profile/boot
 lme4results <- paramsummary_sigma %>% filter(method == "lme4")
 bootresults <- profileresults <- as.data.frame(lme4results)
-bootresults$method <- "boot"
-profileresults$method <- "profile"
+bootresults[["method"]] <- "boot"
+profileresults[["method"]] <- "profile"
 
 # Now, do the bootstrapping and the profile
 profilelist <- bootlist <- list()
