@@ -139,7 +139,8 @@ paramsummary_sigma <- tibble(
   sigmasq_point = c(Reduce(c,Map("[[",Map("[[",GAlist,"sigmaints"),2)),Reduce(c,Map("[[",Map("[[",AQlist,"sigmaints"),2)),rep(-1,length(LMElist))),
   sigmasq_upper = c(Reduce(c,Map("[[",Map("[[",GAlist,"sigmaints"),3)),Reduce(c,Map("[[",Map("[[",AQlist,"sigmaints"),3)),rep(-1,length(LMElist)))
 )
-paramsummary_sigma[paramsummary_sigma$method == "lme4", ]$sigmasq_point <- exp(-Reduce(c,Map("[",Map("[[",LMElist,"theta"),5))/2)
+lmethetas <- as.numeric(Reduce(c,Map("[",Map("[[",LMElist,"theta"),5)))
+paramsummary_sigma[paramsummary_sigma$method == "lme4", ]$sigmasq_point <- exp(-lmethetas/2)
 # now replicate the lme4 results and change the method to profile/boot
 lme4results <- paramsummary_sigma %>% filter(method == "lme4")
 bootresults <- profileresults <- lme4results
