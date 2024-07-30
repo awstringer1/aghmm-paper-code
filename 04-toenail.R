@@ -138,7 +138,7 @@ paramsummary_beta <- tibble(
 
 # lme4 does not provide Wald intervals for sigma
 # prepare the frame then add the profile and bootstrap intervals after, with their time comparisons
-paramsummary_sigma <- tibble(
+paramsummary_sigma <- data.frame(
   method = c(Reduce(c,Map("[[",GAlist,"method")),Reduce(c,Map("[[",AQlist,"method")),Reduce(c,Map("[[",LMElist,"method"))),
   k = c(Reduce(c,Map("[[",GAlist,"k")),Reduce(c,Map("[[",AQlist,"k")),Reduce(c,Map("[[",LMElist,"k"))),
   sigmasq_lower = c(Reduce(c,Map("[[",Map("[[",GAlist,"sigmaints"),1)),Reduce(c,Map("[[",Map("[[",AQlist,"sigmaints"),1)),rep(-1,length(LMElist))),
