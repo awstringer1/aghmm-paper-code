@@ -164,7 +164,7 @@ dosim <- function(lst) {
   # Fit model
   cat(" Fitting model... ")
   opt <- tryCatch(aghqmm::aghqmm(y ~ x*t + (t|id),simdata,k=k,method = "both",control = bfgscontrol),error = function(e) e)
-  
+  cat(" Done itting model... ")
   if (inherits(opt,'condition')) return(opt)
   
   # Return results
