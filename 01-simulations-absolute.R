@@ -70,11 +70,13 @@ library(aghqmm)
 numruns <- 2  # Number of times to execute the simulations
 numsims <- 2 # Number of simulations in each category PER RUN
 # m <- c(100, 1000)
-m <- 100
 # n <- c(3,5)
-n <- 10
 # k <- c(1,3,5)
-k <- 5
+
+m <- 100
+n <- 10
+k <- 15
+
 
 beta <- c(-2.5,-.15,.1,.2)
 S <- matrix(c(2,1,1,1),ncol=2)
