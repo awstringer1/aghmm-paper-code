@@ -27,7 +27,8 @@ pkgs <- c(
   'lme4',
   'GLMMadaptive',
   'Rcpp',
-  'RcppEigen'
+  'RcppEigen',
+  'remotes'
   # 'parallel'
 )
 for (pkg in pkgs) {
