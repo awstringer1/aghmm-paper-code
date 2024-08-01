@@ -105,13 +105,6 @@ for (j in 1:length(ktodo)) {
   GAlist[[j]]$k <- k
 }
 
-cat("LMElist before error removal:\n")
-print(LMElist)
-cat("AQlist before error removal:\n")
-print(AQlist)
-cat("GAlist before error removal:\n")
-print(GAlist)
-
 LMEerrs <- Reduce(c,Map(inherits,LMElist,what="condition"))
 AQerrs <- Reduce(c,Map(inherits,AQlist,what="condition"))
 GAerrs <- Reduce(c,Map(inherits,GAlist,what="condition"))
@@ -119,14 +112,6 @@ GAerrs <- Reduce(c,Map(inherits,GAlist,what="condition"))
 LMElist <- LMElist[!LMEerrs]
 AQlist <- AQlist[!AQerrs]
 GAlist <- GAlist[!GAerrs]
-
-cat("LMElist after error removal:\n")
-print(LMElist)
-cat("AQlist after error removal:\n")
-print(AQlist)
-cat("GAlist after error removal:\n")
-print(GAlist)
-
 
 paramsummary_beta <- tibble(
   method = c(Reduce(c,Map("[[",LMElist,"method")),Reduce(c,Map("[[",AQlist,"method")),Reduce(c,Map("[[",GAlist,"method"))),
@@ -168,14 +153,6 @@ lme4results <- paramsummary_sigma |> filter(method == "lme4")
 bootresults <- profileresults <- as.data.frame(lme4results)
 bootresults[["method"]] <- rep("boot", nrow(bootresults))
 profileresults[["method"]] <- rep("profile", nrow(bootresults))
-
-print(paramsummary_sigma)
-print(lme4results)
-print(lme4results[ ,'sigmasq_lower'])
-print(lme4results[['sigmasq_lower']])
-print(lme4results[ ,"sigmasq_lower"])
-print(lme4results[["sigmasq_lower"]])
-
 
 # Now, do the bootstrapping and the profile
 profilelist <- bootlist <- list()
