@@ -159,8 +159,10 @@ dosim <- function(lst) {
   bfgscontrol <- aghqmm::aghqmm_control()
   
   # Simulate data
+  cat(" Simulating data... ")
   simdata <- aghqmm::simulate_data(m,n,beta,S)
   # Fit model
+  cat(" Fitting model... ")
   opt <- tryCatch(aghqmm::aghqmm(y ~ x*t + (t|id),simdata,k=k,method = "both",control = bfgscontrol),error = function(e) e)
   
   if (inherits(opt,'condition')) return(opt)
@@ -174,12 +176,13 @@ dosim <- function(lst) {
   truesigmas <- c(diag(S),S[2,1])
   estsigmas <- opt$sigmaints[ ,2]
   
+  cat(" Summarizing results... ")
   paramresults <- data.frame(
     true = c(beta,truesigmas),
     est = c(opt$theta[1:4],estsigmas),
     lowerWald = c(opt$betaints[ ,1],opt$sigmaints[ ,1]),
     upperWald = c(opt$betaints[ ,3],opt$sigmaints[ ,3])
-  ) %>%
+  ) |>
     dplyr::mutate(
       covrWald = lowerWald <= true & upperWald >= true,
       lengthWald = upperWald - lowerWald
