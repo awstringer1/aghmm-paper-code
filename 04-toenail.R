@@ -33,7 +33,8 @@ pkgs <- c(
   'lme4',
   'GLMMadaptive',
   'mice',
-  'remotes'
+  'remotes',
+  'fastmatrix'
 )
 for (pkg in pkgs) {
   if (!require(pkg,character.only = TRUE,quietly = TRUE)) {
