@@ -156,8 +156,6 @@ dosim <- function(lst) {
   
   # Simulate data
   simdata <- aghqmm::simulate_data(m,n,beta,S)
-  cat("Simulated data: \n")
-  print(simdata)
   # Fit model using both methods
   cat("doing aghq... ")
   opt_aghqmm <- tryCatch(aghqmm::aghqmm(y ~ x*t + (t|id),simdata,k=k,method = "both",control = bfgscontrol),
