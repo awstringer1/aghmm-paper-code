@@ -69,8 +69,10 @@ library(aghqmm)
 # These settings are used for testing/continuous integration purposes:
 numruns <- 2  # Number of times to execute the simulations
 numsims <- 2 # Number of simulations in each category PER RUN
-m <- c(100, 1000)
-n <- c(3,5)
+# m <- c(100, 1000)
+m <- 100
+# n <- c(3,5)
+n <- 10
 # k <- c(1,3,5)
 k <- 5
 
