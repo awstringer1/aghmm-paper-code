@@ -28,6 +28,7 @@ pkgs <- c(
   'ggplot2',
   'dplyr',
   'tidyr',
+  'readr',
   'lme4',
   'GLMMadaptive',
   'Rcpp',
