@@ -33,7 +33,7 @@ pkgs <- c(
   'GLMMadaptive',
   'Rcpp',
   'RcppEigen',
-  'parallel',
+  # 'parallel', # Disable parallel, for compatibility with Windows
   'fastmatrix',
   'remotes'
 )
@@ -232,7 +232,7 @@ processsimulation <- function(sim) {
 
 ### Do Simulations ###
 set.seed(92633)
-mc.reset.stream() # Reproducbility in parallel
+# mc.reset.stream() # Reproducbility in parallel- diabled for testing
 # Do the simulations
 cat("Doing",length(simlist),"simulations...\n")
 tm <- Sys.time()
@@ -240,7 +240,8 @@ tm <- Sys.time()
 simruns <- list()
 length(simruns) <- numruns
 for (b in 1:numruns) {
-  simruns[[b]] <- mclapply(simlist,dosim)
+  # simruns[[b]] <- mclapply(simlist,dosim)
+  simruns[[b]] <- lapply(simlist,dosim)
 }
 sims <- Reduce(c,simruns)
 simtime <- as.numeric(difftime(Sys.time(),tm,units='secs'))
