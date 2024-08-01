@@ -15,11 +15,6 @@ figurepath <- file.path(basepath,'figures')
 if (!dir.exists(figurepath)) dir.create(figurepath)
 simresultsname <- paste0(simname,".RData")
 simsprocessedname <- paste0(simname,".csv")
-
-# CHANGE the path to where you downloaded the aghqmm package repo
-# from https://github.com/awstringer1/aghqmm
-aghqmmpath <- "~/work/projects/mixedmodel-computation/aghqmm" # CHANGE this
-
 # Everything else in the script should run without changes
 
 ## Load Packages ##

@@ -22,8 +22,9 @@ aghqmmpath <- "~/work/projects/mixedmodel-computation/aghqmm" # CHANGE this
 ## Load external packages
 pkgs <- c(
   'tidyverse',
+  'fastmatrix',
   'lme4',
-  'GLMMadaptive',
+  'GLMMadaptive'
   'parallel'
 )
 for (pkg in pkgs) {
