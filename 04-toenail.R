@@ -103,6 +103,14 @@ for (j in 1:length(ktodo)) {
   AQlist[[j]]$k <- k
   GAlist[[j]]$k <- k
 }
+
+cat("LMElist before error removal:\n")
+print(LMElist)
+cat("AQlist before error removal:\n")
+print(AQlist)
+cat("GAlist before error removal:\n")
+print(GAlist)
+
 LMEerrs <- Reduce(c,Map(inherits,LMElist,what="condition"))
 AQerrs <- Reduce(c,Map(inherits,AQlist,what="condition"))
 GAerrs <- Reduce(c,Map(inherits,GAlist,what="condition"))
@@ -110,6 +118,13 @@ GAerrs <- Reduce(c,Map(inherits,GAlist,what="condition"))
 LMElist <- LMElist[!LMEerrs]
 AQlist <- AQlist[!AQerrs]
 GAlist <- GAlist[!GAerrs]
+
+cat("LMElist after error removal:\n")
+print(LMElist)
+cat("AQlist after error removal:\n")
+print(AQlist)
+cat("GAlist after error removal:\n")
+print(GAlist)
 
 
 paramsummary_beta <- tibble(
