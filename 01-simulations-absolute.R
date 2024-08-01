@@ -68,7 +68,7 @@ library(aghqmm)
 # k <- c(1,3,5,7,9,11,13,15,17,19,21,23,25)
 # These settings are used for testing/continuous integration purposes:
 numruns <- 2  # Number of times to execute the simulations
-numsims <- 10 # Number of simulations in each category PER RUN
+numsims <- 2 # Number of simulations in each category PER RUN
 m <- c(100, 1000)
 n <- c(3,5)
 k <- c(1,3,5)
@@ -128,8 +128,8 @@ for (i in 1:nrow(simstodoframe)) {
   idx <- idx+1
 }
 
-options(mc.cores = parallel::detectCores())
-RNGkind("L'Ecuyer-CMRG") # For reproducibility with parallel
+# options(mc.cores = parallel::detectCores())
+# RNGkind("L'Ecuyer-CMRG") # For reproducibility with parallel
 
 ### Function to execute simulation ###
 
