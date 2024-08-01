@@ -71,7 +71,8 @@ numruns <- 2  # Number of times to execute the simulations
 numsims <- 2 # Number of simulations in each category PER RUN
 m <- c(100, 1000)
 n <- c(3,5)
-k <- c(1,3,5)
+# k <- c(1,3,5)
+k <- 5
 
 beta <- c(-2.5,-.15,.1,.2)
 S <- matrix(c(2,1,1,1),ncol=2)
@@ -164,7 +165,7 @@ dosim <- function(lst) {
   # Fit model
   cat(" Fitting model... ")
   opt <- tryCatch(aghqmm::aghqmm(y ~ x*t + (t|id),simdata,k=k,method = "both",control = bfgscontrol),error = function(e) e)
-  cat(" Done itting model... ")
+  cat(" Done fitting model... ")
   if (inherits(opt,'condition')) return(opt)
   
   # Return results
