@@ -27,7 +27,7 @@ pkgs <- c(
   'lme4',
   'GLMMadaptive',
   'Rcpp',
-  # 'RcppEigen',
+  'RcppEigen',
   # 'parallel', # Disable parallel, for compatibility with Windows
   'fastmatrix',
   'remotes'
@@ -39,10 +39,6 @@ for (pkg in pkgs) {
     require(pkg,character.only = TRUE,quietly = TRUE)
   }
 }
-
-# Force use of RcppEigen version 3.3.9.4
-rcppeigenpath <- "https://cran.r-project.org/src/contrib/Archive/RcppEigen/RcppEigen_0.3.3.9.3.tar.gz"
-install.packages(rcppeigenpath, repose = NULL, type = "source")
 
 ## Install aghqmm
 
