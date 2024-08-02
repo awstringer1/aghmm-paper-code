@@ -19,8 +19,6 @@ simsprocessedname <- paste0(simname,".csv")
 
 ## Load Packages ##
 
-install.packages(aghqmmpath,repos=NULL,type="source")
-
 pkgs <- c(
   'ggplot2',
   'dplyr',
