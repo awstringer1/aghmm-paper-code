@@ -24,7 +24,8 @@ pkgs <- c(
   'readr',
   'lme4',
   'Rcpp',
-  'RcppEigen'
+  'RcppEigen',
+  'remotes'
   # 'parallel'
 )
 for (pkg in pkgs) {
