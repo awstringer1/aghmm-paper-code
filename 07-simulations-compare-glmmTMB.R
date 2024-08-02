@@ -5,7 +5,7 @@
 
 ## Set paths ##
 # CHANGE the base path to whatever you want on your machine
-basepath <- '~/work/projects/mixedmodel-computation/replication'
+basepath <- getwd()
 # CHANGE the name of the simulation to control how saved results are named
 simname <- "sims-glmmTMB-20240724-v1"
 stopifnot(dir.exists(basepath))
@@ -16,23 +16,22 @@ if (!dir.exists(figurepath)) dir.create(figurepath)
 simresultsname <- paste0(simname,".RData")
 simsprocessedname <- paste0(simname,".csv")
 
-# CHANGE the path to where you downloaded the aghqmm package repo
-# from https://github.com/awstringer1/aghqmm
-aghqmmpath <- "~/work/projects/mixedmodel-computation/aghqmm" # CHANGE this
-
 # Everything else in the script should run without changes
 
 ## Load Packages ##
 
-install.packages(aghqmmpath,repos=NULL,type="source")
-
 pkgs <- c(
-  'tidyverse',
+  'ggplot2',
+  'dplyr',
+  'tidyr',
+  'fastmatrix',
+  'readr',
   'lme4',
   'glmmTMB',
   'Rcpp',
   'RcppEigen',
-  'parallel'
+  'remotes'
+  # 'parallel'
 )
 for (pkg in pkgs) {
   if (!require(pkg,character.only = TRUE,quietly = TRUE)) {
@@ -42,14 +41,38 @@ for (pkg in pkgs) {
   }
 }
 
+## Install aghqmm
+
+# Local
+# If installing remotely from Github doesn't work, download the package repository to your basepath
+# and uncomment the next two lines:
+# aghqmmpath <- file.path(basepath, "aghqmm")
+# install.packages(aghqmmpath, repos=NULL, type="source")
+# Remote: if you have a Github PAT set up in your R session, this should work:
+remotes::install_github("awstringer1/aghqmm", force = TRUE)
+# If you want to set up remotes, this tutorial is helpful:
+# https://carpentries.github.io/sandpaper-docs/github-pat.html
+library(aghqmm)
+
+
 
 ## Set Parameters ##
 # Will run numsims simulations in parallel, repeated numruns times in series.
+# These settings reproduce what's in the paper:
+# numruns <- 1  # Number of times to execute the simulations
+# numsims <- 1000 # Number of simulations in each category PER RUN
+# m <- c(100,200,500,1000) # m,n chosen from main manuscript
+# n <- c(3,5,7,9)
+# k <- 1 # glmmTMB only has Laplace
+# These settings are used for testing/continuous integration purposes:
 numruns <- 1  # Number of times to execute the simulations
-numsims <- 1000 # Number of simulations in each category PER RUN
-m <- c(100,200,500,1000) # m,n chosen from main manuscript
-n <- c(3,5,7,9)
+numsims <- 2 # Number of simulations in each category PER RUN
+m <- c(100, 200) # m,n chosen from main manuscript
+n <- c(3, 5)
 k <- 1 # glmmTMB only has Laplace
+
+
+
 beta <- c(-2.5,-.15,.1,.2)
 S <- matrix(c(2,1,1,1),ncol=2)
 Q <- solve(S)
@@ -105,8 +128,8 @@ for (i in 1:nrow(simstodoframe)) {
   idx <- idx+1
 }
 
-options(mc.cores = parallel::detectCores())
-RNGkind("L'Ecuyer-CMRG") # For reproducibility with parallel
+# options(mc.cores = parallel::detectCores())
+# RNGkind("L'Ecuyer-CMRG") # For reproducibility with parallel
 
 ### Function to execute simulation ###
 
@@ -202,7 +225,7 @@ processsimulation <- function(sim) {
 
 ### Do Simulations ###
 set.seed(92633)
-mc.reset.stream() # Reproducbility in parallel
+# mc.reset.stream() # Reproducbility in parallel
 # Do the simulations
 cat("Doing",length(simlist),"simulations...\n")
 tm <- Sys.time()
@@ -210,7 +233,8 @@ tm <- Sys.time()
 simruns <- list()
 length(simruns) <- numruns
 for (b in 1:numruns) {
-  simruns[[b]] <- mclapply(simlist,dosim)
+  # simruns[[b]] <- mclapply(simlist,dosim)
+  simruns[[b]] <- lapply(simlist,dosim)
 }
 sims <- Reduce(c,simruns)
 simtime <- as.numeric(difftime(Sys.time(),tm,units='secs'))
