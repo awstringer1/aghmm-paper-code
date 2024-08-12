@@ -32,7 +32,7 @@ Note that this takes days for each example, as a lot of simulations were used.
   - Run `02-simulations-compare-glmmadaptive.R`.
   - Run `06-simulations-compare-lme4.R`.
 - Section 5.1 and Supplement 4.1, smoking data:
-  - Download the `SmkStudy.dat` file as described below and save it to your machine.
+  - Download the `SmkStudy.dat` file as described above and save it to your machine.
   - In the script `03-smoking.R`, look for `CHANGE` comments on lines 7 and 11. Change the paths here to wherever you saved the `SmkStudy.dat` file.
   - Run `03-smoking.R`.
   - Note: there will be warnings; the model does not converge successfully for all methods and numbers of quadrature points. These are part of the results discussed in the paper.
