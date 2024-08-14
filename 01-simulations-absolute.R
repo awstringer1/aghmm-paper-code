@@ -62,15 +62,11 @@ library(aghqmm)
 # n <- c(3,5,7,9)
 # k <- c(1,3,5,7,9,11,13,15,17,19,21,23,25)
 # These settings are used for testing/continuous integration purposes:
-numruns <- 2  # Number of times to execute the simulations
+numruns <- 1  # Number of times to execute the simulations
 numsims <- 2 # Number of simulations in each category PER RUN
-# m <- c(100, 1000)
-# n <- c(3,5)
-# k <- c(1,3,5)
-
-m <- 100
-n <- 10
-k <- 15
+m <- c(100, 1000)
+n <- c(3,5)
+k <- c(1,3,5)
 
 
 beta <- c(-2.5,-.15,.1,.2)

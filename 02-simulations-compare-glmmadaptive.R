@@ -65,7 +65,7 @@ library(aghqmm)
 # k <- seq(1,25,by=2)
 # These are used for continuous integration/testing:
 numruns <- 1  # Number of times to execute the simulations
-numsims <- 5 # Number of simulations in each category PER RUN
+numsims <- 2  # Number of simulations in each category PER RUN
 m <- c(100, 1000) # m,n chosen from main manuscript
 n <- c(3,5)
 k <- seq(1,5,by=2)
