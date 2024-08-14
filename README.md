@@ -23,6 +23,8 @@ The number of simulations run by default is much smaller than what was used to p
 To reproduce the actual results in the paper, you should set `numruns` and `numsims` appropriately within each script; the numbers used in the paper are included as comments in each script.
 Note that this takes days for each example, as a lot of simulations were used.
 
+Note also that the paper results were produced in parallel, but since this does not work on Windows, I have modified the scripts to run in series instead.
+
 - Section 4.3, simulation 1 and Supplement 3.1:
   - Run `01-summarize-simulations-absolute.R`.
 - Section 4.3, simulation 2 and Supplements 3.2.1 and 3.2.2:

@@ -4,7 +4,7 @@
 
 ## Set paths
 # CHANGE the base path to whatever you want on your machine
-basepath <- '~/work/projects/mixedmodel-computation/replication'
+basepath <- getwd()
 stopifnot(dir.exists(basepath))
 resultspath <- file.path(basepath,'results')
 if (!dir.exists(resultspath)) dir.create(resultspath)
@@ -14,18 +14,18 @@ dataname <- "SmkStudy.dat"
 stopifnot(dir.exists(datapath))
 stopifnot(file.exists(file.path(datapath,dataname))) # Data
 figurepath <- file.path(basepath,'figures')
-
-# CHANGE the path to where you downloaded the aghqmm package repo
-# from https://github.com/awstringer1/aghqmm
-aghqmmpath <- "~/work/projects/mixedmodel-computation/aghqmm" # CHANGE this
+if (!dir.exists(figurepath)) dir.create(figurepath)
 
 ## Load external packages
 pkgs <- c(
-  'tidyverse',
+  'ggplot2',
+  'dplyr',
+  'tidyr',
+  'readr',
   'fastmatrix',
   'lme4',
-  'GLMMadaptive'
-  'parallel'
+  'GLMMadaptive',
+  'remotes'
 )
 for (pkg in pkgs) {
   if (!require(pkg,character.only = TRUE,quietly = TRUE)) {
@@ -37,7 +37,17 @@ for (pkg in pkgs) {
 
 ## Install aghqmm
 
-install.packages(aghqmmpath,repos=NULL,type="source")
+# Local
+# If installing remotely from Github doesn't work, download the package repository to your basepath
+# and uncomment the next two lines:
+# aghqmmpath <- file.path(basepath, "aghqmm")
+# install.packages(aghqmmpath, repos=NULL, type="source")
+# Remote: if you have a Github PAT set up in your R session, this should work:
+remotes::install_github("awstringer1/aghqmm", force = TRUE)
+# If you want to set up remotes, this tutorial is helpful:
+# https://carpentries.github.io/sandpaper-docs/github-pat.html
+library(aghqmm)
+
 
 ## Load data
 
@@ -45,6 +55,12 @@ smoking <- read_table(file.path(datapath,dataname),col_names = FALSE)
 colnames(smoking) <- c("id","quit","time","group","groupxtime")
 
 ## Fit models
+# Number of times to re-reun whole procedure for assessing computation time
+# This is what's used in the paper:
+# NUMRUNS <- 500
+# This is what I use for testing the code:
+NUMRUNS <- 5
+
 
 # Fit using GLMMadaptive and aghqmm, for multiple k
 
@@ -291,7 +307,6 @@ ggsave(filename = file.path(figurepath,"smoking-sigma2sq-manuscript.pdf"),plot=s
 
 # computation time
 # re-run for a long time
-NUMRUNS <- 500
 GAcomptimes <- AQcomptimes <- list()
 length(GAcomptimes) <- length(AQcomptimes) <- length(ktodo)
 tm <- Sys.time()
@@ -375,7 +390,7 @@ relcomptimesplot <- relcomptimesframe %>%
   scale_y_continuous(breaks = seq(0,10,by=1)) +
   coord_cartesian(ylim = c(0,10)) +
   scale_x_discrete(breaks = seq(1,25,by=4)) +
-  geom_hline(yintercept=0,lty='dashed')
+  geom_hline(yintercept=1,lty='dashed')
 
 relcomptimesplotmain <- relcomptimesplot +
   theme(text = element_text(size = MAINTEXTSIZE))
