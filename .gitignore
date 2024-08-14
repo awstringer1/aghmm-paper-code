@@ -54,3 +54,5 @@ rsconnect/
 *.RData
 *.Rdata
 *.rds
+*.dat
+*.Dat
